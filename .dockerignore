@@ -1,0 +1,12 @@
+**/.venv
+**/__pycache__
+**/.vscode
+*.code-workspace
+docker-compose*
+compose*
+dockerfile
+**/*.git
+*.gitignore
+*.dockerignore
+*.rst
+**/*.DS_Store

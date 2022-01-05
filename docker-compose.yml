@@ -1,0 +1,11 @@
+version: '3'
+services:
+  scan-bot:
+    image: jonesabino/argyle:0.9.1
+    working_dir: /usr/src/app
+    command: >
+      bash -c "poetry run python main.py"
+    volumes:
+      - type: bind
+        source: $PWD/output
+        target: /usr/src/app/output

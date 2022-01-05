@@ -1,14 +1,12 @@
-"""
-- Log into the portal
-- scan the main portal page
-- return the information which you think is valuable.
-- Save the result to a file in a json format.
-"""
+import traceback
+from tenacity import retry
+from tenacity.stop import stop_after_attempt
+from tenacity.retry import retry_if_exception_type
 from playwright.sync_api import Page, Locator
-from levels import config
+import config
 
 
-class Login:
+class LoginPage:
     def __init__(self, page: Page):
         self.page = page
 
@@ -28,29 +26,31 @@ class Login:
     def submit_button(self) -> Locator:
         return self.page.locator('#login_control_continue')
 
+    @property
+    def main_page(self) -> Locator:
+        return self.page.locator('[data-test="freelancer-sidebar-profile"]')
 
-# def _interact(selector: Locator, data: str = ''):
-#     '''
-#     Static type checker complains about may-be-None objects
-#     This helper function asserts each one of the properties are not None
-#     and them perform the interaction with the page.
+    def navigate(self):
+        '''
+        Goes to `upwork.com` login page
+        '''
+        self.page.goto(config.upwork_login_page)
 
-#     :param data: data to be filled if the selector is a field, defaults to ''
-#     '''
-#     if not data:
-#         selector.click()
-#     else:
-#         selector.fill(data)
-
-
-def authenticate(page: Page):
-    '''
-    Performs the login flow
-
-    :param page: The page to interact with
-    '''
-    login_page = Login(page)
-    login_page.username_field.fill(config.username)
-    login_page.continue_to_password_btn.click()
-    login_page.password_field.fill(config.password)
-    login_page.submit_button.click()
+    @retry(stop=stop_after_attempt(2), retry=retry_if_exception_type(Exception))
+    def authenticate(self):
+        '''
+        Performs the login flow
+        '''
+        try:
+            self.username_field.fill(config.username)
+            self.continue_to_password_btn.click()
+            self.password_field.fill(config.password)
+            self.submit_button.click()
+            self.main_page.wait_for(timeout=7000.0)
+            if not self.main_page.is_visible():
+                self.page.reload()
+                raise Exception
+        except:
+            self.page.reload()
+            print(traceback.format_exc())
+            raise Exception('Retrying login. After the 2nd tentative the execution will stop.')
