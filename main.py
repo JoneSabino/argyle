@@ -13,9 +13,9 @@ def create_context(p: Playwright) -> BrowserContext:
 
 
 def write_file(profile: md.Model):
-    filename = "scan_result"
+    filename = 'scan_result'
     os.makedirs('output', exist_ok=True)
-    with open(f'{filename}.json', 'w', encoding='utf8') as f:
+    with open(f'output/{filename}.json', 'w', encoding='utf8') as f:
         f.write(profile.json(exclude_none=True))
 
 
