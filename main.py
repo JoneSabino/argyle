@@ -2,9 +2,6 @@ from __future__ import annotations
 import os
 import traceback
 from playwright.sync_api import sync_playwright, Playwright, BrowserContext
-from tenacity import retry
-from tenacity.stop import stop_after_attempt
-from tenacity.retry import retry_if_exception_type
 from pages import login, portal
 import models.model as md
 
@@ -18,7 +15,7 @@ def create_context(p: Playwright) -> BrowserContext:
 def write_file(profile: md.Model):
     filename = "scan_result"
     os.makedirs('output', exist_ok=True)
-    with open(f'{filename}/end.json', 'w', encoding='utf8') as f:
+    with open(f'{filename}.json', 'w', encoding='utf8') as f:
         f.write(profile.json(exclude_none=True))
 
 
