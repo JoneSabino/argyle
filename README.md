@@ -2,22 +2,15 @@
 
 **Name:** Jones Sabino
 
-## Stack, Tools and External packages
+## Tools and External packages
 
 **Virtualization:** Docker
-
-**Programming language version:** Python 3.9
-
+**Programming language version:** Python 3.8.10
 **Automation Library:** PlayWright
-
 **Static Type Checker:** Pyright
-
 **Linter:** Pylama
-
 **Package Manager:** Poetry
-
 **Data Validation:** Pydantic
-
 **Retrying Library:** Tenacity
 
 ## Notes written during the exercise
@@ -29,7 +22,7 @@
 - I chose to use ***Tenacity*** to manage the retries in case of exception. It is lightweight and has cool features out of the box. With more time it could be used in a more robust way.
 - For this exercise I chose to map the elements and extract the data with playwright but in a prod bot I would download the html and scrape with ***bs4*** to minimize the risks of losing data in the scan, it would also increase my options on how to work with the data.
 
-## **Would've done if there was more time**
+## **Would've done if there had been more time**
 
 - Implement proper logs, with meaningful information in the different log levels. Loguru would be a strong candidate for that;
 - Implement better error handling;
